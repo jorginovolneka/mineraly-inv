@@ -1,3 +1,4 @@
+// --- Stav aplikace ---
 let rawData = [];
 let filteredData = [];
 let colIndex = {};
@@ -5,7 +6,7 @@ let currentSortCol = null;
 let currentSortDir = 'asc';
 let photosEnabled = false; // výchozí: fotky vypnuté
 
-// Klíčová slova pro mapování hlaviček
+// --- Mapování názvů sloupců v CSV ---
 const columnKeywords = {
     inv: ['inventarni', 'cislo', 'id'],
     name: ['nazev', 'mineral'],
@@ -28,18 +29,18 @@ function normalizeHeader(str) {
         .replace(/[^a-z0-9]/g, '');
 }
 
+// --- Načtení CSV (UTF‑8) ---
 function loadCSV() {
-    fetch('data.csv?v=' + new Date().getTime())
+    fetch('data.csv?v=' + Date.now())
         .then(r => r.arrayBuffer())
         .then(buffer => {
             let text = new TextDecoder('utf-8').decode(buffer);
-            if (text.charCodeAt(0) === 0xFEFF) {
-                text = text.slice(1);
-            }
+            // odstranění BOM
+            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
             parseCSV(text);
         })
-        .catch(e => {
-            console.error(e);
+        .catch(err => {
+            console.error(err);
             const el = document.getElementById('loading');
             if (el) el.textContent = 'Chyba načítání dat.';
         });
@@ -51,15 +52,13 @@ function parseCSV(text) {
 
     const headerLine = lines[0];
     const separator = headerLine.includes(';') ? ';' : ',';
-
     const headers = headerLine.split(separator);
 
-    // Mapování sloupců
+    // namapuj indexy sloupců
     colIndex = {};
     for (const key in columnKeywords) {
         colIndex[key] = -1;
         const keywords = columnKeywords[key];
-
         headers.forEach((h, idx) => {
             const normH = normalizeHeader(h);
             if (keywords.some(k => normH.includes(k))) {
@@ -71,7 +70,7 @@ function parseCSV(text) {
     rawData = lines.slice(1).map(line => {
         if (!line.trim()) return null;
         return line.split(separator);
-    }).filter(r => r !== null);
+    }).filter(Boolean);
 
     filteredData = [...rawData];
 
@@ -82,12 +81,14 @@ function parseCSV(text) {
     if (loadingEl) loadingEl.style.display = 'none';
 }
 
+// --- Pomocné funkce pro data ---
 function getVal(row, key) {
     const idx = colIndex[key];
     if (idx === -1 || !row[idx]) return '';
     return row[idx].trim().replace(/^"|"$/g, '');
 }
 
+// --- vykreslení tabulky ---
 function renderTable() {
     const tbody = document.querySelector('#mineralsTable tbody');
     if (!tbody) return;
@@ -98,14 +99,15 @@ function renderTable() {
 
         const invNum = getVal(row, 'inv');
 
-        // Fotka – jen když je zapnutý přepínač
+        // fotka – jen pokud je zapnuto photosEnabled
         let imgHtml = '';
         if (photosEnabled && invNum) {
-            const imgPath = `img/${invNum}.jpg`; // případně změň na .JPG
-            imgHtml = `<a href="${imgPath}" target="_blank">
-                           <img src="${imgPath}" class="mineral-photo"
-                                onerror="this.style.display='none'" alt="foto">
-                       </a>`;
+            const imgPath = `img/${invNum}.jpg`; // případně .JPG
+            imgHtml = `
+                <a href="${imgPath}" target="_blank">
+                    <img src="${imgPath}" class="mineral-photo"
+                         onerror="this.style.display='none'" alt="foto">
+                </a>`;
         }
 
         tr.innerHTML = `
@@ -128,6 +130,7 @@ function renderTable() {
     });
 }
 
+// --- filtry a ovládání ---
 function initControls() {
     const regionSelect = document.getElementById('regionFilter');
     const searchInput = document.getElementById('searchInput');
@@ -150,3 +153,92 @@ function initControls() {
         });
 
         regionSelect.addEventListener('change', applyFilters);
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+    }
+
+    if (togglePhotos) {
+        // výchozí stav – fotky vypnuté
+        togglePhotos.checked = false;
+        photosEnabled = false;
+
+        togglePhotos.addEventListener('change', () => {
+            photosEnabled = togglePhotos.checked;
+            // jen překreslí tabulku – teprve teď se vloží <img src=...>
+            renderTable();
+        });
+    }
+
+    // klikání na hlavičky pro řazení
+    document.querySelectorAll('#mineralsTable thead th[data-key]').forEach(th => {
+        th.style.cursor = 'pointer';
+        th.addEventListener('click', () => {
+            const key = th.dataset.key;
+            if (key === 'foto') return; // fotky neřadíme
+            sortData(key);
+        });
+    });
+}
+
+// --- filtrování ---
+function applyFilters() {
+    const regionSelect = document.getElementById('regionFilter');
+    const searchInput = document.getElementById('searchInput');
+
+    const regionVal = regionSelect ? regionSelect.value : '';
+    const searchVal = searchInput ? searchInput.value.toLowerCase() : '';
+
+    filteredData = rawData.filter(row => {
+        const region = getVal(row, 'region');
+        const fullText = row.join(' ').toLowerCase();
+
+        const matchRegion = !regionVal || region === regionVal;
+        const matchSearch = !searchVal || fullText.includes(searchVal);
+
+        return matchRegion && matchSearch;
+    });
+
+    renderTable();
+}
+
+// --- řazení ---
+function sortData(key) {
+    if (currentSortCol === key) {
+        currentSortDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSortCol = key;
+        currentSortDir = 'asc';
+    }
+
+    // šipky v hlavičce
+    document.querySelectorAll('#mineralsTable thead th[data-key]').forEach(th => {
+        th.textContent = th.textContent.replace(' ▲', '').replace(' ▼', '');
+    });
+    const activeTh = document.querySelector(`#mineralsTable thead th[data-key="${key}"]`);
+    if (activeTh) {
+        activeTh.textContent += currentSortDir === 'asc' ? ' ▲' : ' ▼';
+    }
+
+    filteredData.sort((a, b) => {
+        const valA = getVal(a, key);
+        const valB = getVal(b, key);
+
+        const numA = parseFloat(valA.replace(',', '.'));
+        const numB = parseFloat(valB.replace(',', '.'));
+
+        if (!isNaN(numA) && !isNaN(numB) && valA.length < 10 && valB.length < 10) {
+            return currentSortDir === 'asc' ? numA - numB : numB - numA;
+        }
+
+        return currentSortDir === 'asc'
+            ? valA.localeCompare(valB, 'cs')
+            : valB.localeCompare(valA, 'cs');
+    });
+
+    renderTable();
+}
+
+// --- start ---
+loadCSV();
