@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventář minerálů</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Inventář minerálů</h1>
+
+    <div class="controls">
+        <div class="filter-group">
+            <label for="regionFilter">Region:</label>
+            <select id="regionFilter">
+                <option value="">Všechny regiony</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <input type="text" id="searchInput" placeholder="Hledat (název, lokalita, popis...)">
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table id="mineralsTable">
+            <thead>
+                <tr>
+                    <!-- Pořadí sloupců si můžeš proházet zde a v JS -->
+                    <th data-key="inv">Číslo</th>
+                    <th data-key="foto">Fotka</th>
+                    <th data-key="name">Název</th>
+                    <th data-key="loc">Lokalita</th>
+                    <th data-key="locDetail">Upřesnění</th>
+                    <th data-key="region">Region</th>
+                    <th data-key="year">Rok</th>
+                    <th data-key="date">Datum</th>
+                    <th data-key="quality">Kvalita</th>
+                    <th data-key="rarity">Vzácnost</th>
+                    <th data-key="condition">Stav lok.</th>
+                    <th data-key="size">Velikost</th>
+                    <th data-key="group">Grupa</th>
+                    <th data-key="desc">Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data vloží skript -->
+            </tbody>
+        </table>
+    </div>
+    <div id="loading">Načítám data...</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
