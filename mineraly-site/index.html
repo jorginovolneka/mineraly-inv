@@ -19,13 +19,18 @@
         <div class="filter-group">
             <input type="text" id="searchInput" placeholder="Hledat (název, lokalita, popis...)">
         </div>
+        <div class="filter-group">
+            <label>
+                <input type="checkbox" id="togglePhotos">
+                Zobrazit fotky
+            </label>
+        </div>
     </div>
 
     <div class="table-wrapper">
         <table id="mineralsTable">
             <thead>
                 <tr>
-                    <!-- Pořadí sloupců si můžeš proházet zde a v JS -->
                     <th data-key="inv">Číslo</th>
                     <th data-key="foto">Fotka</th>
                     <th data-key="name">Název</th>
@@ -43,7 +48,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Data vloží skript -->
+                <!-- Data doplní script.js -->
             </tbody>
         </table>
     </div>
