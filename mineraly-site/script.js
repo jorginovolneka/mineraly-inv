@@ -4,7 +4,7 @@ let filteredData = [];
 let colIndex = {};
 let currentSortCol = null;
 let currentSortDir = 'asc';
-let photosEnabled = false; // výchozí: fotky vypnuté
+let photosEnabled = false; // výchozí: fotky (i makro) vypnuté
 
 // --- Mapování názvů sloupců v CSV ---
 const columnKeywords = {
@@ -35,8 +35,7 @@ function loadCSV() {
         .then(r => r.arrayBuffer())
         .then(buffer => {
             let text = new TextDecoder('utf-8').decode(buffer);
-            // odstranění BOM
-            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1); // BOM
             parseCSV(text);
         })
         .catch(err => {
@@ -81,7 +80,7 @@ function parseCSV(text) {
     if (loadingEl) loadingEl.style.display = 'none';
 }
 
-// --- Pomocné funkce pro data ---
+// --- Pomocné funkce ---
 function getVal(row, key) {
     const idx = colIndex[key];
     if (idx === -1 || !row[idx]) return '';
@@ -99,10 +98,21 @@ function renderTable() {
 
         const invNum = getVal(row, 'inv');
 
-        // fotka – jen pokud je zapnuto photosEnabled
+        // Fotka a makro – pouze pokud je přepínač zapnutý
+        let macroHtml = '';
         let imgHtml = '';
+
         if (photosEnabled && invNum) {
-            const imgPath = `img/${invNum}.jpg`; // případně .JPG
+            const base = `img/${invNum}`;
+
+            const macroPath = `${base}_macro.jpg`; // např. 10_macro.jpg
+            macroHtml = `
+                <a href="${macroPath}" target="_blank">
+                    <img src="${macroPath}" class="mineral-photo"
+                         onerror="this.style.display='none'" alt="makro">
+                </a>`;
+
+            const imgPath = `${base}.jpg`; // např. 10.jpg
             imgHtml = `
                 <a href="${imgPath}" target="_blank">
                     <img src="${imgPath}" class="mineral-photo"
@@ -112,6 +122,7 @@ function renderTable() {
 
         tr.innerHTML = `
             <td>${invNum}</td>
+            <td>${macroHtml}</td>
             <td>${imgHtml}</td>
             <td><b>${getVal(row, 'name')}</b></td>
             <td>${getVal(row, 'loc')}</td>
@@ -160,13 +171,10 @@ function initControls() {
     }
 
     if (togglePhotos) {
-        // výchozí stav – fotky vypnuté
         togglePhotos.checked = false;
         photosEnabled = false;
-
         togglePhotos.addEventListener('change', () => {
             photosEnabled = togglePhotos.checked;
-            // jen překreslí tabulku – teprve teď se vloží <img src=...>
             renderTable();
         });
     }
@@ -176,7 +184,7 @@ function initControls() {
         th.style.cursor = 'pointer';
         th.addEventListener('click', () => {
             const key = th.dataset.key;
-            if (key === 'foto') return; // fotky neřadíme
+            if (key === 'foto' || key === 'macro') return; // neřadíme podle obrázků
             sortData(key);
         });
     });
@@ -242,3 +250,4 @@ function sortData(key) {
 
 // --- start ---
 loadCSV();
+
