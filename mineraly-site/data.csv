@@ -68,13 +68,13 @@
 67;pyromorfit;Nová Ves;gossan;Jeseníky;2024;20240816;;;;;VII.  Fosfáty;;67
 68;wavellit;Mílina;;Střední Čechy;2025;20250713;;;;;VII.  Fosfáty;;68
 69;wavellit;Třenice;;Střední Čechy;2025;20250713;;;;;VII.  Fosfáty;;69
-70;apatit;Gavá;Mina Elvira;Španělsko;2025;20250719;;;;;VII.  Fosfáty;;70
-71;tinticit;Gavá;Mina Elvira;Španělsko;2025;20250719;;;;;VII.  Fosfáty;;71
+70;apatit;Gavá;Mina Elvira;Španělsko;2025;20250719;;;;;VII.  Fosfáty;pozn. nejspíš nejde o apatit (analýza Raman VP);70
+71;tinticit;Gavá;Mina Elvira;Španělsko;2025;20250719;;;;;VII.  Fosfáty;pozn. identita nepotvrzena (analýza Raman VP), může jít o sedimentární horninu jílovitého typu;71
 72;pyromorfit;Komárovice;u Jihlavy;Vysočina;2024;20240308;;;;;VII.  Fosfáty;;72
 73;pyromorfit;Kvasetice;u Havlíčkova Brodu;Vysočina;2024;20240414;;;;;VII.  Fosfáty;;73
 74;chabazit;Heřmanice;;České středohoří;2025;20250710;;;;;VIII.  Silikáty;;74
 75;chabazit;Řepčice;;České středohoří;2025;20250710;;;;;VIII.  Silikáty;;75
-76;natrolit;Dobranka;u Dobrné;České středohoří;2025;20250710;;;;;VIII.  Silikáty;;76
+76;thomsonit;Dobranka;u Dobrné;České středohoří;2025;20250710;;;;;VIII.  Silikáty;;76
 77;thomsonit;Pustý vrch;Folknáře;České středohoří;2025;20250710;;;;;VIII.  Silikáty;;77
 78;jadeit;Oyashirazu;;Japonsko;2025;20250925;;;;;VIII.  Silikáty;;78
 79;nefrit;Oyashirazu;;Japonsko;2025;20250925;;;;;VIII.  Silikáty;;79
@@ -113,4 +113,14 @@
 112;skoryl;Bobrůvka;Lindy;Vysočina;2024;20240824;;;;;VIII.  Silikáty;;112
 113;skoryl;Přibyslavice;lom č. 5;Vysočina;2024;20241116;;;;;VIII.  Silikáty;;113
 114;skoryl;Dobrá Voda;;Vysočina;;;;;;;VIII.  Silikáty;;114
-115;kaersutit;Černošín;Vlčí hora;;;;;;;;VIII.  Silikáty;;115
+115;kaersutit;Černošín;Vlčí hora;Střední Čechy;2025;20250712;;;;;VIII.  Silikáty;pozn. Region = Západní Čechy;115
+116;apatit;Krupka;žíla Lukáš;Krušné hory;2025;20250711;;;;;VII.  Fosfáty;var. fluorapatit (analyzováno - Raman, VP 11/2025);116
+117;spinel;Luc Yen;;Vietnam;2025;20250711;;;;;;červený spinel na mramorové matrici, pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;117
+118;spinel;Luc Yen;;Vietnam;2025;20250711;;;;;;fialový spinel na mramorové matrici, pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;118
+119;spinel;Luc Yen;;Vietnam;2025;20250711;;;;;;drúza modrého spinelu, pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;119
+120;spinel;Luc Yen;;Vietnam;2025;20250511;;;;;;samostatný oktaedrický krystal pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;120
+121;spinel;Luc Yen;;Vietnam;2025;20250511;;;;;;samostatné porušené krystalky modrého spinelu, pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;121
+122;pargasit;Luc Yen;;Vietnam;2025;20250511;;;;;;pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;122
+123;korund;Luc Yen;;Vietnam;2024;20241009;;;;;;pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;123
+124;elbait;Luc Yen;;Vietnam;2025;20250511;;;;;;var. Mouřenínská hlavička, pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;124
+125;akvamarín;Luc Yen;;Vietnam;2025;20250511;;;;;;pozn. nákup ve městě Luc Yen - Yen The, Yen Bai;125
